@@ -2,6 +2,10 @@ import { useEffect, useState } from 'react';
 import { useLazyGetUserReposQuery, useSearchUsersQuery } from '../store/github/github.api';
 import { useDebounce } from '../hooks/useDebounce';
 
+import ReposList from '../components/ReposList/ReposList';
+
+import { getErrorMessage } from '../utils/getErrorMessage';
+
 function HomePage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [dropdown, setDropdown] = useState(false);
@@ -33,20 +37,6 @@ function HomePage() {
   useEffect(() => {
     setDropdown(debounced.length >= 3 && data?.length! > 0);
   }, [debounced, data]);
-
-  const getErrorMessage = (error: any) => {
-    if (error) {
-      if ('status' in error) {
-        // you can access all properties of `FetchBaseQueryError` here
-        return 'error' in error ? error.error : JSON.stringify(error.data);
-      } else {
-        // you can access all properties of `SerializedError` here
-        return error.message;
-      }
-    } else {
-      return '';
-    }
-  };
 
   const clickHandler = (username: string) => {
     fetchRepos(username);
@@ -94,27 +84,13 @@ function HomePage() {
         {isError && <p className='text-center font-bold text-red-700'>{getErrorMessage(userError)}</p>}
         {isLoading && <p className='text-center font-bold'>Loading...</p>}
       </div>
-      <div className='container mx-auto'>
-        {isReposSuccess && (
-          <ul className='list-none container py-2'>
-            {userRepos &&
-              userRepos.map((repo) => {
-                return (
-                  <li
-                    key={repo.id}
-                    className='flex text-left px-4 hover:bg-slate-200 transition-colors cursor-pointer'
-                  >
-                    <span>{repo.name}</span>
-                  </li>
-                );
-              })}
-            {isRepoError && (
-              <p className='text-center font-bold text-red-700'>{getErrorMessage(repoError)}</p>
-            )}
-            {areReposLoading && <p className='text-center font-bold'>Repos are Loading...</p>}
-          </ul>
-        )}
-      </div>
+      <ReposList
+        areReposLoading={areReposLoading}
+        userRepos={userRepos}
+        isRepoError={isRepoError}
+        repoError={repoError}
+        isReposSuccess={isReposSuccess}
+      />
     </main>
   );
 }
