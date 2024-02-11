@@ -40,6 +40,7 @@ function HomePage() {
 
   const clickHandler = (username: string) => {
     fetchRepos(username);
+    setSearchQuery('');
     setDropdown(false);
   };
 
@@ -50,7 +51,7 @@ function HomePage() {
   return (
     <main className='w-full max-w-5xl px-4 py-10 mx-auto text-center'>
       <h1 className='mb-8 font-medium text-xl text-slate-900'>Home Page</h1>
-      <div className='container max-w-3xl mx-auto relative z-10'>
+      <div className='container max-w-3xl mx-auto mb-8 relative z-10'>
         <input
           className='w-full px-4 py-2 rounded-md border-solid border border-slate-900'
           type='text'
