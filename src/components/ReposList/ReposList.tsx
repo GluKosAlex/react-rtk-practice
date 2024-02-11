@@ -6,9 +6,9 @@ import { SerializedError } from '@reduxjs/toolkit';
 
 interface ReposListProps {
   areReposLoading: boolean;
-  userRepos: IRepo[] | undefined;
+  userRepos?: IRepo[];
   isRepoError: boolean;
-  repoError: FetchBaseQueryError | SerializedError | undefined;
+  repoError?: FetchBaseQueryError | SerializedError;
   isReposSuccess: boolean;
 }
 

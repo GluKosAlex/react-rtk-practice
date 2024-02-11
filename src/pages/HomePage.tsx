@@ -5,6 +5,7 @@ import { useDebounce } from '../hooks/useDebounce';
 import ReposList from '../components/ReposList/ReposList';
 
 import { getErrorMessage } from '../utils/getErrorMessage';
+import { LS_USER_KEY } from '../utils/constants';
 
 function HomePage() {
   const [searchQuery, setSearchQuery] = useState('');
@@ -38,8 +39,14 @@ function HomePage() {
     setDropdown(debounced.length >= 3 && data?.length! > 0);
   }, [debounced, data]);
 
+  useEffect(() => {
+    const usernameFromLocalStorage = localStorage.getItem(LS_USER_KEY);
+    if (usernameFromLocalStorage) fetchRepos(usernameFromLocalStorage);
+  }, [fetchRepos]);
+
   const clickHandler = (username: string) => {
     fetchRepos(username);
+    localStorage.setItem(LS_USER_KEY, username);
     setSearchQuery('');
     setDropdown(false);
   };

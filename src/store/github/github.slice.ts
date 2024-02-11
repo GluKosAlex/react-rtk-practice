@@ -1,7 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { IRepo } from '../../models/models';
-
-const LS_FAV_KEY = 'fav-key';
+import { LS_FAV_KEY } from '../../utils/constants';
 
 interface GithubState {
   favorites: IRepo[];
